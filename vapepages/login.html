@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход — Vape точка</title>
+    <style>
+        body { background-color: #0b0b0e; color: #ffffff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .auth-card { background: #13131a; padding: 40px; border-radius: 16px; border: 1px solid #00ffcc; box-shadow: 0 0 20px rgba(0, 255, 204, 0.2); width: 100%; max-width: 350px; text-align: center; }
+        h2 { color: #7928ca; margin-bottom: 25px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #1c1c24; border: 1px solid #333; border-radius: 8px; color: #fff; box-sizing: border-box; }
+        input:focus { border-color: #7928ca; outline: none; }
+        button { background: linear-gradient(135deg, #00ffcc, #7928ca); color: #0b0b0e; padding: 12px; width: 100%; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 15px; }
+        .error { color: #ff4d4d; font-size: 14px; margin-bottom: 10px; }
+        a { color: #7928ca; text-decoration: none; font-size: 14px; display: inline-block; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <h2>Вход в профиль</h2>
+        {% if error %}<div class="error">{{ error }}</div>{% endif %}
+        <form action="/login" method="POST">
+            <input type="text" name="username" placeholder="Ваш логин" required>
+            <input type="password" name="password" placeholder="Ваш пароль" required>
+            <button type="submit">Войти</button>
+        </form>
+        <a href="/register">Нет аккаунта? Зарегистрироваться</a>
+    </div>
+</body>
+</html>

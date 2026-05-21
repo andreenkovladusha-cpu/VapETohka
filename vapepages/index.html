@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Vape точка — Главная</title>
+    <link rel="icon" href="data:,">
+    <style>
+        body { background-color: #000000; color: #ffffff; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; padding: 0; text-align: center; }
+        header { background-color: #000000; padding: 25px 50px; border-bottom: 1px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .logo { color: #ffffff; font-size: 24px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+        .logo-dot { width: 12px; height: 12px; background-color: #ffffff; border-radius: 50%; display: inline-block; }
+        nav a { color: #7f7f7f; margin: 0 20px; text-decoration: none; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        nav a:hover { color: #ffffff; }
+        .auth-nav a { background: #000000; padding: 10px 22px; border-radius: 4px; border: 1px solid #ffffff; color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-left: 10px; transition: 0.3s; }
+        .auth-nav a:hover { background: #ffffff; color: #000000; }
+        .hero { max-width: 700px; margin: 120px auto; padding: 60px; background: #000000; border-radius: 0px; border: 1px solid #1a1a1a; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .hero h2 { font-size: 44px; font-weight: 800; margin-bottom: 25px; letter-spacing: 1px; text-transform: uppercase; }
+        .hero p { color: #8c8c8c; font-size: 16px; line-height: 1.8; letter-spacing: 0.5px; }
+        .btn { display: inline-block; background: #ffffff; color: #000000; padding: 16px 45px; border-radius: 4px; border: 1px solid #ffffff; text-decoration: none; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 13px; margin-top: 35px; transition: 0.3s; }
+        .btn:hover { background: #000000; color: #ffffff; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">VAPE TOЧКА <span class="logo-dot"></span></div>
+        <nav>
+            <a href="/">Главная</a>
+            <a href="/catalog">Ассортимент</a>
+            <a href="/reviews">Отзывы</a>
+        </nav>
+        <div class="auth-nav">
+            {% if session.get('user') %}
+                <span style="color:#7f7f7f; margin-right: 15px; font-size: 13px; text-transform: uppercase;">👤 {{ session['user'] }}</span>
+                {% if session.get('is_admin') %}
+                    <a href="/admin" style="border-color: #ff4d4d; color: #ff4d4d;">Админка</a>
+                {% endif %}
+                <a href="/logout" style="border: none; color: #ff4d4d; padding: 0;">Выйти</a>
+            {% else %}
+                <a href="/login">Войти</a>
+                <a href="/register" style="background:#ffffff; color:#000000;">Регистрация</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="hero">
+        <h2>VAPE ТОЧКА</h2>
+        <p>Премиальное качество оригинальных девайсов, сочные линейки одноразовых испарителей и самые свежие миксы жидкостей. Строгий стиль. Чистый вкус.</p>
+        <a href="/catalog" class="btn">Открыть ассортимент</a>
+    </div>
+</body>
+</html>

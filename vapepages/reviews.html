@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Отзывы — Vape точка</title>
+    <link rel="icon" href="data:,">
+    <style>
+        body { background-color: #000000; color: #ffffff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+        header { background: #000000; padding: 25px 50px; border-bottom: 1px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index:100; }
+        .logo { color: #ffffff; font-size: 24px; font-weight: 800; text-decoration: none; letter-spacing: 2px; text-transform: uppercase; }
+        nav a { color: #7f7f7f; margin: 0 15px; text-decoration: none; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        nav a:hover { color: #ffffff; }
+        .container { max-width: 650px; margin: 50px auto; padding: 0 20px; }
+        form { background: #121212; padding: 30px; border-radius: 0px; border: 1px solid #1a1a1a; margin-bottom: 40px; }
+        form h3 { margin-top: 0; color: #ffffff; font-size: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        textarea, select { width: 100%; padding: 14px; margin: 15px 0; background: #000000; border: 1px solid #1a1a1a; border-radius: 4px; color: #fff; box-sizing: border-box; font-size: 14px; }
+        textarea:focus, select:focus { border-color: #ffffff; outline: none; }
+        button { background: #ffffff; color: #000000; padding: 14px; width: 100%; border: 1px solid #ffffff; border-radius: 4px; font-weight: bold; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #000000; color: #ffffff; }
+        .review-box { background: #121212; padding: 25px; margin: 20px 0; border-radius: 0px; border: 1px solid #1a1a1a; border-left: 4px solid #ffffff; }
+        .review-box h4 { margin: 0 0 12px 0; font-size: 16px; display: flex; justify-content: space-between; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stars { color: #ffffff; font-size: 14px; letter-spacing: 2px; }
+        .review-box p { color: #b5b5c3; margin: 0; font-style: italic; line-height: 1.5; }
+        .login-alert { background: #121212; padding: 25px; text-align: center; border: 1px dashed #1a1a1a; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }
+        .login-alert a { color: #ffffff; text-decoration: underline; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">VAPE TOЧКА</a>
+        <nav><a href="/">Главная</a><a href="/catalog">Ассортимент</a><a href="/reviews">Отзывы</a></nav>
+        <div style="width: 100px;"></div>
+    </header>
+
+    <div class="container">
+        {% if session.get('user') %}
+        <form action="/reviews" method="POST">
+            <h3>Оставить отзыв</h3>
+            <select name="stars" id="stars">
+                <option value="5">★★★★★ (Оценка: 5)</option>
+                <option value="4">★★★★ (Оценка: 4)</option>
+                <option value="3">★★★ (Оценка: 3)</option>
+                <option value="2">★★ (Оценка: 2)</option>
+                <option value="1">★ (Оценка: 1)</option>
+            </select>
+            <textarea name="review_text" placeholder="Ваше мнение об обслуживании или товарах..." rows="4" required></textarea>
+            <button type="submit">Опубликовать мнение</button>
+        </form>
+        {% else %}
+        <div class="login-alert">
+            <p>Чтобы оставить отзыв, <a href="/login">авторизуйтесь</a> или <a href="/register">создайте профиль</a>.</p>
+        </div>
+        {% endif %}
+
+        <h2 style="text-transform: uppercase; font-size: 22px; letter-spacing: 1px; margin-top: 40px;">Отзывы клиентов</h2>
+        {% for rev in reviews %}
+        <div class="review-box">
+            <h4>
+                <span>👤 {{ rev.username }}</span> 
+                <span class="stars">
+                    {% for i in range(rev.rating) %}★{% endfor %}
+                </span>
+            </h4>
+            <p>"{{ rev.text }}"</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Корзина — Vape точка</title>
+    <link rel="icon" href="data:,">
+    <style>
+        body { background-color: #0b0b0e; color: #ffffff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+        header { background-color: #13131a; padding: 15px 50px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
+        .logo { color: #00ffcc; font-size: 24px; font-weight: bold; text-decoration: none; }
+        .container { max-width: 600px; margin: 50px auto; padding: 0 20px; }
+        .cart-item { background: #13131a; padding: 20px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
+        .total-box { background: linear-gradient(135deg, #13131a, #1c1c24); padding: 25px; border-radius: 12px; border: 1px solid #7928ca; text-align: center; margin-top: 30px; }
+        .checkout-btn { background: #00ffcc; color: #000; font-weight: bold; font-size: 16px; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 15px; }
+        .checkout-btn:hover { background: #7928ca; color: #fff; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">💨 Vape точка</a>
+        <nav style="nav a { color: #aaa; text-decoration: none; }"><a href="/catalog" style="color:#aaa; text-decoration:none;">← Назад в каталог</a></nav>
+    </header>
+
+    <div class="container">
+        <h2>🛒 Ваша корзина</h2>
+        {% if not cart_items %}
+            <p style="color:#aaa; text-align:center; margin-top:40px;">В вашей корзине пока пусто...</p>
+        {% else %}
+            {% for item in cart_items %}
+            <div class="cart-item">
+                <div>
+                    <h3 style="margin:0;">{{ item.product.name }}</h3>
+                    <span style="color:#666;">Количество: {{ item.count }} шт.</span>
+                </div>
+                <div style="color:#00ffcc; font-weight:bold; font-size:18px;">{{ item.total }} ₽</div>
+            </div>
+            {% endfor %}
+
+            <div class="total-box">
+                <h3 style="margin:0;">Итого к оплате: <span style="color:#00ffcc;">{{ total_price }} ₽</span></h3>
+                {% if session.get('user') %}
+                    <form action="/cart/checkout" method="POST">
+                        <button type="submit" class="checkout-btn">Оформить заказ</button>
+                    </form>
+                {% else %}
+                    <p style="color:#ff4d4d; font-size:14px; margin-top:15px;">Для оформления заказа необходимо <a href="/login" style="color:#00ffcc;">войти в профиль</a>.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

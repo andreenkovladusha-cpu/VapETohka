@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог — Vape точка</title>
+    <link rel="icon" href="data:,">
+    <style>
+        body { background-color: #000000; color: #ffffff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+        header { background: #0a0a0a; padding: 15px 50px; border-bottom: 1px solid #ffffff; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index:90; }
+        .logo { color: #ffffff; font-size: 24px; font-weight: bold; text-decoration: none; letter-spacing: 1px; }
+        nav a { color: #8c8c9e; margin: 0 15px; text-decoration: none; font-weight: 500; transition: 0.2s; }
+        nav a:hover { color: #ffffff; text-decoration: underline; }
+        
+        .cart-status { background: #000000; border: 1px solid #ffffff; color: #ffffff; padding: 8px 15px; border-radius: 0px; display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .cart-status:hover { background: #ffffff; color: #000000; }
+
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 250px 1fr; gap: 30px; }
+        .sidebar { background: #0a0a0a; padding: 20px; border-radius: 0px; border: 1px solid #222222; height: fit-content; }
+        .search-box input { width: 100%; padding: 10px; background: #000000; border: 1px solid #333333; border-radius: 0px; color: #fff; box-sizing: border-box; }
+        .search-box input:focus { border-color: #ffffff; outline: none; }
+        .filter-group { margin-top: 25px; }
+        .filter-group h3 { font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #222222; padding-bottom: 8px; }
+        .filter-link { display: block; color: #8c8c9e; padding: 8px 0; text-decoration: none; transition: 0.2s; }
+        .filter-link:hover, .filter-link.active { color: #ffffff; font-weight: bold; }
+        
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+        .card { background: #0a0a0a; border: 1px solid #222222; border-radius: 0px; display: flex; flex-direction: column; justify-content: space-between; transition: 0.2s; overflow: hidden; }
+        .card:hover { border-color: #ffffff; }
+        
+        .product-img-box { width: 100%; height: 200px; background: #0a0a0a; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #222222; overflow: hidden; }
+        .product-img { width: 100%; height: 100%; object-fit: cover; }
+        .no-img-text { color: #444444; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+
+        .card-content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .card h3 { margin: 5px 0 10px 0; font-size: 18px; font-weight: 700; }
+        .card p { color: #8c8c9e; font-size: 14px; margin: 0 0 15px 0; min-height: 40px; line-height: 1.4; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+        .price { color: #ffffff; font-size: 20px; font-weight: bold; }
+        .buy-btn { background: #ffffff; color: #000000; border: 1px solid #ffffff; padding: 8px 15px; border-radius: 0px; cursor: pointer; font-weight: bold; transition: 0.2s; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
+        .buy-btn:hover { background: #000000; color: #ffffff; }
+
+        .cart-panel { position: fixed; top: 0; right: -30vw; width: 25vw; height: 100vh; background: #050505; border-left: 1px solid #222222; box-shadow: -10px 0 30px rgba(0,0,0,0.8); z-index: 200; transition: right 0.4s ease; padding: 30px; box-sizing: border-box; display: flex; flex-direction: column; }
+        .cart-panel.open { right: 0; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222222; padding-bottom: 15px; margin-bottom: 20px; }
+        .cart-header h2 { margin: 0; color: #ffffff; font-size: 22px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .close-cart { background: none; border: none; color: #ff4d4d; font-size: 24px; cursor: pointer; }
+        
+        .cart-items { flex: 1; overflow-y: auto; margin-bottom: 20px; }
+        .cart-item { background: #0a0a0a; padding: 12px; border-radius: 0px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222222; }
+        .cart-item-info h4 { margin: 0 0 5px 0; font-size: 15px; }
+        .cart-item-info p { margin: 0; color: #ffffff; font-size: 13px; font-weight: bold; }
+        .remove-item { background: none; border: none; color: #ff4d4d; cursor: pointer; font-size: 18px; }
+        
+        .cart-footer { border-top: 1px solid #222222; padding-top: 20px; }
+        .total-price-box { display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+        .checkout-btn { background: #ffffff; color: #000000; width: 100%; border: 1px solid #ffffff; padding: 12px; border-radius: 0px; font-weight: bold; font-size: 14px; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px; }
+        .checkout-btn:hover { background: #000000; color: #ffffff; }
+        .clear-all-btn { background: none; border: none; color: #8c8c9e; width: 100%; text-align: center; margin-top: 10px; cursor: pointer; font-size: 13px; text-decoration: underline; }
+
+        @media (max-width: 1024px) { .cart-panel { width: 40vw; right: -45vw; } }
+        @media (max-width: 600px) { .cart-panel { width: 85vw; right: -90vw; } }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">VAPE ТОЧКА</a>
+        <nav><a href="/">Главная</a><a href="/catalog">Ассортимент</a><a href="/reviews">Отзывы</a></nav>
+        <div class="cart-status" onclick="toggleCart(true)">
+            🛒 Корзина: <span id="cart-count">0</span> шт.
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <form action="/catalog" method="GET" class="search-box">
+                <input type="text" name="search" placeholder="Поиск товара..." value="{{ search }}">
+            </form>
+            <div class="filter-group">
+                <h3>Категории</h3>
+                <a href="/catalog" class="filter-link {% if not current_category %}active{% endif %}">Все товары</a>
+                <a href="/catalog?category=Жидкости" class="filter-link {% if current_category == 'Жидкости' %}active{% endif %}">Жидкости</a>
+                <a href="/catalog?category=Одноразки" class="filter-link {% if current_category == 'Одноразки' %}active{% endif %}">Одноразки</a>
+                <a href="/catalog?category=Поды" class="filter-link {% if current_category == 'Поды' %}active{% endif %}">Под-системы</a>
+            </div>
+        </div>
+
+        <div>
+            <h2 style="margin-top:0; font-weight: 800; letter-spacing: 0.5px;">АКТУАЛЬНАЯ ВИТРИНА</h2>
+            <div class="product-grid">
+                {% for prod in products %}
+                <div class="card">
+                    <div class="product-img-box">
+                        {% if prod.image_file %}
+                            <img src="{{ url_for('static', filename='uploads/' + prod.image_file) }}" class="product-img" alt="{{ prod.name }}">
+                        {% else %}
+                            <div class="no-img-text">Нет фото</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card-content">
+                        <div>
+                            <span style="font-size: 11px; color: #8c8c9e; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px;">{{ prod.category }}</span>
+                            <h3>{{ prod.name }}</h3>
+                            <p>{{ prod.desc }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <div class="price">{{ prod.price }} ₽</div>
+                            <button class="buy-btn" onclick="addToCart({{ prod.id }}, '{{ prod.name }}', {{ prod.price }})">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-panel" id="cartPanel">
+        <div class="cart-header">
+            <h2>Ваш заказ</h2>
+            <button class="close-cart" onclick="toggleCart(false)">×</button>
+        </div>
+        <div class="cart-items" id="cartItemsList"></div>
+        <div class="cart-footer">
+            <div class="total-price-box">
+                <span>Итого:</span>
+                <span style="color: #ffffff;"><span id="cartTotalPrice">0</span> ₽</span>
+            </div>
+            <button class="checkout-btn" onclick="checkoutOrder()">Оформить заказ</button>
+            <button class="clear-all-btn" onclick="clearCart()">Очистить корзину</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('vape_cart')) || [];
+
+        function toggleCart(open) {
+            const panel = document.getElementById('cartPanel');
+            if (open) {
+                panel.classList.add('open');
+                renderCart();
+            } else {
+                panel.classList.remove('open');
+            }
+        }
+
+        function addToCart(id, name, price) {
+            const existingItem = cart.find(item => item.id === id);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ id: id, name: name, price: price, quantity: 1 });
+            }
+            saveCart();
+            const statusBox = document.querySelector('.cart-status');
+            statusBox.style.backgroundColor = '#ffffff';
+            statusBox.style.color = '#000000';
+            setTimeout(() => {
+                statusBox.style.backgroundColor = '#000000';
+                statusBox.style.color = '#ffffff';
+            }, 300);
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            saveCart();
+            renderCart();
+        }
+
+        function saveCart() {
+            localStorage.setItem('vape_cart', JSON.stringify(cart));
+            updateCounters();
+        }
+
+        function updateCounters() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').innerText = totalItems;
+        }
+
+        function renderCart() {
+            const listContainer = document.getElementById('cartItemsList');
+            const totalContainer = document.getElementById('cartTotalPrice');
+            listContainer.innerHTML = '';
+            
+            if (cart.length === 0) {
+                listContainer.innerHTML = '<p style="color: #444444; text-align: center; margin-top: 40px; text-transform: uppercase; font-size:12px;">Корзина пуста</p>';
+                totalContainer.innerText = '0';
+                return;
+            }
+            
+            let totalPrice = 0;
+            cart.forEach(item => {
+                totalPrice += item.price * item.quantity;
+                listContainer.innerHTML += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <h4>${item.name}</h4>
+                            <p>${item.price} ₽ x ${item.quantity}</p>
+                        </div>
+                        <button class="remove-item" onclick="removeFromCart(${item.id})">×</button>
+                    </div>
+                `;
+            });
+            totalContainer.innerText = totalPrice;
+        }
+
+        function clearCart() {
+            cart = [];
+            saveCart();
+            renderCart();
+        }
+
+        function checkoutOrder() {
+            if(cart.length === 0) {
+                alert("Добавьте товары в корзину перед оформлением!");
+                return;
+            }
+            fetch('/api/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cart: cart })
+            })
+            .then(res => {
+                if(res.status === 401) {
+                    alert("Пожалуйста, войдите в свой профиль на главной странице, чтобы оформить заказ!");
+                    throw new Error("Не авторизован");
+                }
+                return res.json();
+            })
+            .then(data => {
+                if(data.success) {
+                    alert("Заказ успешно оформлен! Он передан администратору.");
+                    clearCart();
+                    toggleCart(false);
+                }
+            })
+            .catch(err => console.log(err));
+        }
+        updateCounters();
+    </script>
+</body>
+</html>
