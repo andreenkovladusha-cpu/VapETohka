@@ -2,50 +2,93 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Корзина — Vape точка</title>
-    <link rel="icon" href="data:,">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина | VapeTohka</title>
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        body { background-color: #0b0b0e; color: #ffffff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
-        header { background-color: #13131a; padding: 15px 50px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
-        .logo { color: #00ffcc; font-size: 24px; font-weight: bold; text-decoration: none; }
-        .container { max-width: 600px; margin: 50px auto; padding: 0 20px; }
-        .cart-item { background: #13131a; padding: 20px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
-        .total-box { background: linear-gradient(135deg, #13131a, #1c1c24); padding: 25px; border-radius: 12px; border: 1px solid #7928ca; text-align: center; margin-top: 30px; }
-        .checkout-btn { background: #00ffcc; color: #000; font-weight: bold; font-size: 16px; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 15px; }
-        .checkout-btn:hover { background: #7928ca; color: #fff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #0a0a0c; color: #fff; min-height: 100vh; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 8%; background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(10px); }
+        .logo { font-size: 22px; font-weight: 600; color: #fff; text-decoration: none; }
+        .logo span { color: #9d4edd; }
+        nav a { color: #8a8a93; text-decoration: none; margin-left: 25px; font-size: 15px; font-weight: 600; }
+        nav a:hover, nav a.active { color: #9d4edd; }
+        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        h2 { font-size: 28px; margin-bottom: 25px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; background: #121215; border: 1px solid #27272a; padding: 20px; border-radius: 14px; margin-bottom: 15px; }
+        .item-info { font-weight: 600; font-size: 16px; }
+        .item-price { color: #8a8a93; font-weight: 600; }
+        .checkout-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 30px; border-radius: 20px; margin-top: 30px; }
+        .promo-form { display: flex; gap: 10px; margin-bottom: 20px; }
+        .promo-form input { flex: 1; padding: 14px; background: #0a0a0c; border: 1px solid #27272a; border-radius: 10px; color: #fff; font-size: 15px; text-transform: uppercase; }
+        .promo-form input:focus { outline: none; border-color: #9d4edd; }
+        .btn { padding: 14px 24px; background: #9d4edd; border: none; border-radius: 10px; color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 15px; }
+        .btn:hover { background: #7b2cbf; }
+        .price-row { display: flex; justify-content: space-between; margin-bottom: 12px; color: #8a8a93; font-size: 15px; }
+        .price-row.total { border-top: 1px solid #27272a; padding-top: 15px; color: #fff; font-size: 18px; font-weight: 600; }
+        .discount-val { color: #10b981; font-weight: 600; }
+        .empty-text { color: #52525b; text-align: center; padding: 40px 0; }
+        .links-row { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+        .clear-link { color: #ef4444; text-decoration: none; font-size: 14px; }
+        .alert { padding: 12px; border-radius: 8px; font-size: 14px; margin-bottom: 20px; text-align: center; }
+        .alert.success { background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399; }
+        .alert.danger { background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171; }
     </style>
 </head>
 <body>
     <header>
-        <a href="/" class="logo">💨 Vape точка</a>
-        <nav style="nav a { color: #aaa; text-decoration: none; }"><a href="/catalog" style="color:#aaa; text-decoration:none;">← Назад в каталог</a></nav>
+        <a href="/" class="logo">Vape<span>Tohka</span></a>
+        <nav><a href="/">Каталог</a><a href="/cart" class="active">Корзина</a></nav>
     </header>
 
     <div class="container">
         <h2>🛒 Ваша корзина</h2>
-        {% if not cart_items %}
-            <p style="color:#aaa; text-align:center; margin-top:40px;">В вашей корзине пока пусто...</p>
-        {% else %}
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if cart_items %}
             {% for item in cart_items %}
             <div class="cart-item">
-                <div>
-                    <h3 style="margin:0;">{{ item.product.name }}</h3>
-                    <span style="color:#666;">Количество: {{ item.count }} шт.</span>
-                </div>
-                <div style="color:#00ffcc; font-weight:bold; font-size:18px;">{{ item.total }} ₽</div>
+                <div class="item-info">{{ item.name }}</div>
+                <div class="item-price">{{ item.price }} BYN</div>
             </div>
             {% endfor %}
 
-            <div class="total-box">
-                <h3 style="margin:0;">Итого к оплате: <span style="color:#00ffcc;">{{ total_price }} ₽</span></h3>
-                {% if session.get('user') %}
-                    <form action="/cart/checkout" method="POST">
-                        <button type="submit" class="checkout-btn">Оформить заказ</button>
-                    </form>
-                {% else %}
-                    <p style="color:#ff4d4d; font-size:14px; margin-top:15px;">Для оформления заказа необходимо <a href="/login" style="color:#00ffcc;">войти в профиль</a>.</p>
+            <div class="checkout-box">
+                <form action="/apply_promo" method="POST" class="promo-form">
+                    <input type="text" name="promo_code" placeholder="Введите промокод" value="{{ promo_code or '' }}" required>
+                    <button type="submit" class="btn">Применить</button>
+                </form>
+
+                <div class="price-row">
+                    <span>Сумма:</span>
+                    <span>{{ total_price }} BYN</span>
+                </div>
+                {% if discount > 0 %}
+                <div class="price-row">
+                    <span>Скидка:</span>
+                    <span class="discount-val">-{{ discount }} BYN</span>
+                </div>
                 {% endif %}
+                <div class="price-row total">
+                    <span>Итого к оплате:</span>
+                    <span>{{ final_price }} BYN</span>
+                </div>
+
+                <div class="links-row">
+                    <a href="/clear_cart" class="clear-link">Очистить корзину</a>
+                    <button class="btn" style="background: #10b981;">Оформить самовывоз</button>
+                </div>
             </div>
+            <p style="font-size: 12px; color: #3f3f46; text-align: center; margin-top: 15px;">Тестовый промокод: MINSK2026</p>
+        {% else %}
+            <p class="empty-text">В корзине пока ничего нет. Перейдите в каталог файлов.</p>
         {% endif %}
     </div>
 </body>

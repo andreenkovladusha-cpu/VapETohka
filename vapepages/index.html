@@ -2,50 +2,67 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Vape точка — Главная</title>
-    <link rel="icon" href="data:,">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VapeTohka | Магазин</title>
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        body { background-color: #000000; color: #ffffff; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; padding: 0; text-align: center; }
-        header { background-color: #000000; padding: 25px 50px; border-bottom: 1px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .logo { color: #ffffff; font-size: 24px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
-        .logo-dot { width: 12px; height: 12px; background-color: #ffffff; border-radius: 50%; display: inline-block; }
-        nav a { color: #7f7f7f; margin: 0 20px; text-decoration: none; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
-        nav a:hover { color: #ffffff; }
-        .auth-nav a { background: #000000; padding: 10px 22px; border-radius: 4px; border: 1px solid #ffffff; color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-left: 10px; transition: 0.3s; }
-        .auth-nav a:hover { background: #ffffff; color: #000000; }
-        .hero { max-width: 700px; margin: 120px auto; padding: 60px; background: #000000; border-radius: 0px; border: 1px solid #1a1a1a; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-        .hero h2 { font-size: 44px; font-weight: 800; margin-bottom: 25px; letter-spacing: 1px; text-transform: uppercase; }
-        .hero p { color: #8c8c8c; font-size: 16px; line-height: 1.8; letter-spacing: 0.5px; }
-        .btn { display: inline-block; background: #ffffff; color: #000000; padding: 16px 45px; border-radius: 4px; border: 1px solid #ffffff; text-decoration: none; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 13px; margin-top: 35px; transition: 0.3s; }
-        .btn:hover { background: #000000; color: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #0a0a0c; color: #fff; min-height: 100vh; padding-bottom: 60px; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 8%; background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 22px; font-weight: 600; color: #fff; text-decoration: none; letter-spacing: -0.5px; }
+        .logo span { color: #9d4edd; }
+        nav a { color: #8a8a93; text-decoration: none; margin-left: 25px; font-size: 15px; font-weight: 600; transition: 0.3s; }
+        nav a:hover, nav a.active { color: #9d4edd; }
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        h2 { font-size: 28px; margin-bottom: 30px; font-weight: 600; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .product-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 25px; text-align: center; transition: 0.3s; position: relative; overflow: hidden; }
+        .product-card:hover { transform: translateY(-5px); border-color: #9d4edd; box-shadow: 0 10px 30px rgba(157,78,221,0.1); }
+        .product-img { width: 100%; height: 180px; background: #121215; border-radius: 14px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; color: #3f3f46; font-size: 14px; }
+        .product-title { font-size: 18px; font-weight: 600; margin-bottom: 10px; text-align: left; }
+        .product-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+        .price { font-size: 20px; font-weight: 600; color: #fff; }
+        .btn-add { background: #9d4edd; color: #fff; border: none; padding: 10px 18px; border-radius: 10px; font-weight: 600; cursor: pointer; text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .btn-add:hover { background: #7b2cbf; }
+        .alert { background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; font-size: 14px; }
     </style>
 </head>
 <body>
     <header>
-        <div class="logo">VAPE TOЧКА <span class="logo-dot"></span></div>
+        <a href="/" class="logo">Vape<span>Tohka</span></a>
         <nav>
-            <a href="/">Главная</a>
-            <a href="/catalog">Ассортимент</a>
-            <a href="/reviews">Отзывы</a>
-        </nav>
-        <div class="auth-nav">
-            {% if session.get('user') %}
-                <span style="color:#7f7f7f; margin-right: 15px; font-size: 13px; text-transform: uppercase;">👤 {{ session['user'] }}</span>
-                {% if session.get('is_admin') %}
-                    <a href="/admin" style="border-color: #ff4d4d; color: #ff4d4d;">Админка</a>
-                {% endif %}
-                <a href="/logout" style="border: none; color: #ff4d4d; padding: 0;">Выйти</a>
+            <a href="/" class="active">Каталог</a>
+            <a href="/cart">Корзина</a>
+            {% if current_user.is_authenticated %}
+                <a href="/profile">Профиль ({{ current_user.username }})</a>
             {% else %}
                 <a href="/login">Войти</a>
-                <a href="/register" style="background:#ffffff; color:#000000;">Регистрация</a>
             {% endif %}
-        </div>
+        </nav>
     </header>
 
-    <div class="hero">
-        <h2>VAPE ТОЧКА</h2>
-        <p>Премиальное качество оригинальных девайсов, сочные линейки одноразовых испарителей и самые свежие миксы жидкостей. Строгий стиль. Чистый вкус.</p>
-        <a href="/catalog" class="btn">Открыть ассортимент</a>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <h2>🔥 Популярные товары</h2>
+        <div class="grid">
+            {% for product in products %}
+            <div class="product-card">
+                <div class="product-img">💨 Изображение товара</div>
+                <div class="product-title">{{ product.name }}</div>
+                <div class="product-meta">
+                    <span class="price">{{ product.price }} BYN</span>
+                    <a href="/add_to_cart/{{ product.id }}" class="btn-add">В корзину</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </body>
 </html>

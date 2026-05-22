@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой Профиль | VapeTohka</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #0a0a0c; color: #fff; display: flex; flex-direction: column; min-height: 100vh; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 8%; background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .logo { font-size: 22px; font-weight: 600; color: #fff; text-decoration: none; }
+        .logo span { color: #9d4edd; }
+        nav a { color: #8a8a93; text-decoration: none; margin-left: 25px; font-size: 15px; font-weight: 600; }
+        nav a:hover { color: #9d4edd; }
+        .wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .profile-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); padding: 40px; border-radius: 24px; width: 100%; max-width: 420px; text-align: center; }
+        .avatar { width: 70px; height: 70px; background: linear-gradient(135deg, #9d4edd, #c77dff); border-radius: 50%; margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; font-size: 28px; font-weight: 600; color: #fff; }
+        h2 { font-size: 22px; margin-bottom: 5px; font-weight: 600; }
+        .email { color: #8a8a93; font-size: 14px; margin-bottom: 25px; }
+        .order-status { background: #121215; border: 1px solid #27272a; padding: 18px; border-radius: 14px; text-align: left; margin-bottom: 25px; }
+        .status-title { font-size: 11px; color: #8a8a93; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .status-value { font-size: 15px; font-weight: 600; color: #10b981; }
+        .btn-logout { display: inline-block; width: 100%; padding: 12px; background: transparent; border: 1px solid #3f3f46; border-radius: 12px; color: #f4f4f5; text-decoration: none; font-weight: 600; transition: 0.3s; font-size: 14px; }
+        .btn-logout:hover { border-color: #ef4444; color: #ef4444; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">Vape<span>Tohka</span></a>
+        <nav><a href="/">Каталог</a><a href="/cart">Корзина</a></nav>
+    </header>
+    <div class="wrapper">
+        <div class="profile-card">
+            <div class="avatar">{{ user.username[0].upper() }}</div>
+            <h2>Привет, {{ user.username }}!</h2>
+            <p class="email">{{ user.email }}</p>
+            <div class="order-status">
+                <p class="status-title">Активный заказ</p>
+                <p class="status-value">📦 Готов к самовывозу (Минск)</p>
+            </div>
+            <a href="/logout" class="btn-logout">Выйти из профиля</a>
+        </div>
+    </div>
+</body>
+</html>

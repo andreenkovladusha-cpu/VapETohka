@@ -2,28 +2,61 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Регистрация — Vape точка</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация | VapeTohka</title>
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        body { background-color: #0b0b0e; color: #ffffff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .auth-card { background: #13131a; padding: 40px; border-radius: 16px; border: 1px solid #7928ca; box-shadow: 0 0 20px rgba(121, 40, 202, 0.2); width: 100%; max-width: 350px; text-align: center; }
-        h2 { color: #00ffcc; margin-bottom: 25px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #1c1c24; border: 1px solid #333; border-radius: 8px; color: #fff; box-sizing: border-box; }
-        input:focus { border-color: #00ffcc; outline: none; }
-        button { background: linear-gradient(135deg, #7928ca, #00ffcc); color: #0b0b0e; padding: 12px; width: 100%; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 15px; }
-        .error { color: #ff4d4d; font-size: 14px; margin-bottom: 10px; }
-        a { color: #00ffcc; text-decoration: none; font-size: 14px; display: inline-block; margin-top: 15px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #0a0a0c; color: #fff; display: flex; flex-direction: column; min-height: 100vh; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 8%; background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .logo { font-size: 22px; font-weight: 600; color: #fff; text-decoration: none; }
+        .logo span { color: #9d4edd; }
+        nav a { color: #8a8a93; text-decoration: none; margin-left: 25px; font-size: 15px; font-weight: 600; }
+        .wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); padding: 40px; border-radius: 24px; width: 100%; max-width: 400px; text-align: center; }
+        h2 { font-weight: 600; margin-bottom: 25px; font-size: 24px; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; font-size: 12px; color: #8a8a93; margin-bottom: 8px; text-transform: uppercase; }
+        input { width: 100%; padding: 14px; background: #121215; border: 1px solid #27272a; border-radius: 12px; color: #fff; font-size: 15px; }
+        .btn { width: 100%; padding: 14px; background: #9d4edd; border: none; border-radius: 12px; color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .btn:hover { background: #7b2cbf; }
+        .footer-text { margin-top: 25px; font-size: 14px; color: #8a8a93; }
+        .footer-text a { color: #9d4edd; text-decoration: none; font-weight: 600; }
+        .alert { padding: 12px; border-radius: 8px; font-size: 14px; margin-bottom: 20px; text-align: center; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171; }
     </style>
 </head>
 <body>
-    <div class="auth-card">
-        <h2>Регистрация</h2>
-        {% if error %}<div class="error">{{ error }}</div>{% endif %}
-        <form action="/register" method="POST">
-            <input type="text" name="username" placeholder="Придумайте логин" required>
-            <input type="password" name="password" placeholder="Придумайте пароль" required>
-            <button type="submit">Создать аккаунт</button>
-        </form>
-        <a href="/login">Уже есть аккаунт? Войти</a>
+    <header>
+        <a href="/" class="logo">Vape<span>Tohka</span></a>
+        <nav><a href="/">Каталог</a><a href="/cart">Корзина</a></nav>
+    </header>
+    <div class="wrapper">
+        <div class="card">
+            <h2>Создание профиля ⚡</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form action="/register" method="POST">
+                <div class="input-group">
+                    <label>Имя пользователя</label>
+                    <input type="text" name="username" placeholder="vladislav" required>
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="example@gmail.com" required>
+                </div>
+                <div class="input-group">
+                    <label>Пароль</label>
+                    <input type="password" name="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn">Зарегистрироваться</button>
+            </form>
+            <p class="footer-text">Уже есть профиль? <a href="/login">Войти</a></p>
+        </div>
     </div>
 </body>
 </html>
